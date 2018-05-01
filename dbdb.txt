@@ -215,16 +215,26 @@ for each row mode db2sql
 update product
 set p_reorder = 1
 where p_onhand <= p_min;
+
+
 select * from product;
+
+
 Create trigger reorder2
 After update of p_onhand, p_min on product
 For each row mode db2sql
 Update product
 Set p_reorder = 1
 Where p_onhand <= p_min;
+
+
 drop trigger reorder2;
+
+
 update product set p_onhand = 4
 where p_code = 'A0001';
+
+
 create table product2
 (
 p_code char(10) not null primary key,
@@ -236,11 +246,15 @@ p_discount decimal(4,2),
 p_minorder int,
 p_reorder int
 );
+
+
 select * from product;
 Insert into product2 values ('A0006','Book',3,6,35.99,0.00,25,0);
 Insert into product2 values ('A0007','Case',30,10,0.50,0.00,50,0);
 Insert into product2 values ('A0008','Ruler',10,12,0.80,0.00,50,0);
 Insert into product2 values ('A0009','Staple',15,11,0.80,0.00,50,0);
+
+
 Create trigger reorder2
 No cascade before update of p_onhand, p_min on product2
 Referencing new as n
@@ -252,7 +266,11 @@ then 0
 When p_onhand<=p_min
 then 1
 End;
+
+
 drop trigger reorder1;
+
+
 create trigger reorder1
 after insert on product
 for each row mode db2sql
@@ -260,6 +278,8 @@ update product
 set p_reorder = 1
 where p_onhand <= p_minorder
 OR p_onhand <= p_min;
+
+
 create trigger discount
 after insert on product
 referencing new as n
