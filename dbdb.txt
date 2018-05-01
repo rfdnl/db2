@@ -1,0 +1,273 @@
+create database dbdb; 
+
+connect to dbdb;
+
+create table student (  id int, name char(50) );
+
+select id, name from student; 
+= select * from student;
+
+insert into student values (1142702426, 'Arif');
+
+// foreign key, refrential
+create table advisor ( advId int not null primary key, name char(30) );
+
+create table student ( stuId int not null primary key, name char(30), advId int, foreign key (advId)  nces adv(advId));
+
+insert into advisor values (100, 'Ali');
+insert into advisor values (101, 'Ahmad');
+
+insert into student values (1, 'Ben', 100);
+insert into student values (2, 'Gary', 101);
+insert into student values (3, 'Tan', 100);
+insert into student values (4, 'Nignog', 103);
+
+// get from two tables using member access
+
+select student.stuId as StudentID, student.name as StudentName, adv.name as AdvisorName
+from student, advisor
+where advisor.advId = student.advId;
+
+connect to dbdb;
+
+create table sales
+(
+	salesId int not null primary key,
+	salesName varchar(30),
+	salesPhone varchar(11)
+);
+
+create table buyer
+(
+	buyerId int not null,
+	buyerName varchar(30),
+	buyerPhone varchar(11),
+	buyerStatus varchar(20),
+	primary key (buyerId)
+);
+
+create table item
+(
+	itemId int not null,
+	itemName varchar(30),
+	itemType varchar(20),
+	itemPrice decimal(7, 2),
+	itemBal int,
+	itemDetails varchar(50),
+	primary key (itemId)
+);
+
+create table invoice
+(
+	invoiceId int not null primary key,
+	invoiceDate date,
+	invoiceQty int,
+	buyerId int,	
+	itemId int,
+	salesId int,
+	foreign key (buyerId) references buyer(buyerId),
+	foreign key (salesId) references sales(salesId),
+	foreign key (itemId) references item(itemId)	
+);
+
+truncate table db2admin.invoice immediate;
+drop table db2admin.invoice;
+select * from item;
+insert into item values (659, 'LCD Monitor','Computer', 900.99, 50, '24 inch Samsung');
+insert into item values (965,'Pen','Stationary',1.64,3,'Red ink');
+insert into item values (855,'Printer','Computer',300.55,1,'Epson super jet');
+insert into item values (698,'Fan','Electrical',86.11,4,'Hitachi');
+insert into item values (598,'Rubber','Stationary',0.63,98,'Faber 3 cm'); 
+insert into item values (456,'Hardisk','Computer',250.81,2,'Maxtor 500GB'); 
+insert into item values (879, 'Pendrive','Computer',98.65,78,'Mydrive 16GB mini version'); 
+insert into item values (888, 'Camera','Electrical',1230.36,8,'Sony 15 Megapixel');  
+
+insert into sales values (23598, 'Zelda', 60125479563
+
+);
+insert into sales values (98665, 'Clarry', 60148597965
+
+
+);
+insert into sales values (13579, 'Nasri', 60195624664
+
+
+);
+insert into sales values (68595, 'Arshavin', 60168462649
+
+);
+select * from sales;
+
+insert into buyer values (1, 'Jeremy', 61255689766, 'Active');
+insert into buyer values (2, 'Cech', 60135695469, 'Not Active');
+insert into buyer values (3, 'Meluda', 60191346876, 'Active');
+insert into buyer values (4, 'Jessica', 60168954615, 'Active');
+insert into buyer values (5, 'Toure', 60136546586, 'Not Active');
+insert into buyer values (6, 'Jesmon', 60145226569, 'Active');
+insert into buyer values (7, 'Torres', 60125469788, 'Active');
+insert into buyer values (8, 'Martin', 60135468798, 'Not Active');
+insert into buyer values (9, 'Taylor', 60124659789, 'Active');
+select * from buyer;
+
+insert into invoice values (10010, '2008-12-15', 2, 1, 659, 68595
+
+);
+insert into invoice values (10011, '2006-01-13', 26, 3, 879, 56523
+
+);
+insert into invoice values (10012, '2008-03-06', 8, 4, 989, 
+
+23598
+);
+insert into invoice values (10013, '2007-10-28', 10, 1, 965, 
+
+13579
+);
+insert into invoice values (10014, '2008-05-16', 6, 7, 888, 98665
+
+
+);
+insert into invoice values (10015, '2008-12-01', 1, 6, 456, 13579
+
+
+);
+insert into invoice values (10016, '2008-12-03', 7, 3, 659, 98665
+
+);
+
+select * from invoice;
+
+http://tolstoynewton.com/projects/courseRegistration/OnlineCourseRegistration%20-%20Tolstoy.pdf
+
+alter table invoice add invoiceprice decimal(7,2);
+
+update invoice 
+set invoiceprice = 
+invoiceqty * 
+(select itemprice from item 
+where invoice.itemid = item.itemid);
+
+update item
+set itembal = (itembal + 5)
+where itemtype = 'Electrical';
+
+select itemname, itemtype, itembal from item 
+where itemtype = 'Electrical';
+
+select itemname, itemprice 
+from item 
+where itemprice = 
+(select max(itemprice) 
+from item);
+
+select count(*)
+from buyer;
+
+select sum(invoiceprice) 
+from invoice
+where invoiceqty > 10;
+
+select itemtype, sum(itemprice)as summy
+from item
+group by itemtype
+having sum(itemprice) > 1000.00;
+
+select * from item;
+select * from invoice;
+
+select itemname, invoicedate, itemprice
+from item, invoice
+where item.itemid = invoice.itemid and
+itemprice > 50.00 and invoicedate > '2006-01-01';
+
+select itemname, itemprice from item
+where itemprice > 
+(select avg(itemprice) from item)
+order by itemprice;
+
+create table product
+(
+p_code char(10) not null primary key,
+p_info varchar(30) not null,
+p_onhand int,
+p_min int,
+p_price decimal(7,2),
+p_discount decimal(4,2),
+p_minorder int,
+p_reorder int
+);
+
+select * from product;
+
+drop table db2admin.product;
+
+insert into product values ('','',,,,,,);
+insert into product values ('A0001','Book',8,5,12.67,0.00,25,0);
+insert into product values ('A0002','Pencil',10,15,0.50,0.05,50,0);
+insert into product values ('A0003','Ruler',18,12,0.80,0.00,50,0);
+insert into product values ('A0004','Eraser',15,8,0.30,0.00,35,0);
+insert into product values ('A0005','Pen',23,5,1.20,0.05,25,0);
+insert into product values ('A0006','Bag',8,10,22.75,0.05,25,0);
+
+create trigger reorder1
+after insert on product
+for each row mode db2sql
+update product
+set p_reorder = 1
+where p_onhand <= p_min;
+select * from product;
+Create trigger reorder2
+After update of p_onhand, p_min on product
+For each row mode db2sql
+Update product
+Set p_reorder = 1
+Where p_onhand <= p_min;
+drop trigger reorder2;
+update product set p_onhand = 4
+where p_code = 'A0001';
+create table product2
+(
+p_code char(10) not null primary key,
+p_info varchar(30) not null,
+p_onhand int,
+p_min int,
+p_price decimal(7,2),
+p_discount decimal(4,2),
+p_minorder int,
+p_reorder int
+);
+select * from product;
+Insert into product2 values ('A0006','Book',3,6,35.99,0.00,25,0);
+Insert into product2 values ('A0007','Case',30,10,0.50,0.00,50,0);
+Insert into product2 values ('A0008','Ruler',10,12,0.80,0.00,50,0);
+Insert into product2 values ('A0009','Staple',15,11,0.80,0.00,50,0);
+Create trigger reorder2
+No cascade before update of p_onhand, p_min on product2
+Referencing new as n
+For each row mode db2sql
+Set n.p_reorder=
+Case
+When p_onhand>p_min
+then 0
+When p_onhand<=p_min
+then 1
+End;
+drop trigger reorder1;
+create trigger reorder1
+after insert on product
+for each row mode db2sql
+update product
+set p_reorder = 1
+where p_onhand <= p_minorder
+OR p_onhand <= p_min;
+create trigger discount
+after insert on product
+referencing new as n
+for each row mode db2sql
+set n.p_discount = 
+case
+when p_price >= 15.00
+then 0.1
+when p_price < 15.00
+then 0.05
+end;
